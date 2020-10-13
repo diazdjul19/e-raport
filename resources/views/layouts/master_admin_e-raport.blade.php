@@ -88,7 +88,7 @@
     <link href="/bracket-master/app/lib/summernote/summernote-bs4.css" rel="stylesheet">
 
     {{-- DateTimePicker --}}
-    {{-- <link rel="stylesheet" href="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.min.css"> --}}
+    <link rel="stylesheet" href="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.min.css">
 </head>
 
 <body>
@@ -111,6 +111,13 @@
             <a href="{{route('school-identity.index')}}" class="br-menu-link {{ request()->is('school-identity') ? 'active' : '' }}">
             <i class=" fas fa-school tx-17"></i>
             <span class="menu-item-label">Identitas Sekolah</span>
+            </a><!-- br-menu-link -->
+        </li><!-- br-menu-item -->
+
+        <li class="br-menu-item">
+            <a href="semester-active" class="br-menu-link {{ request()->is('semester-active') ? 'active' : '' }}">
+            <i class="far fa-calendar-alt tx-18"></i>
+            <span class="menu-item-label">Set Semester Aktif</span>
             </a><!-- br-menu-link -->
         </li><!-- br-menu-item -->
 
@@ -161,8 +168,16 @@
                     <li class="sub-item"><a href="{{route('management-students-kelas-10')}}" class="sub-link {{ request()->is('management-students-kelas-10','management-students-kelas-10-table/*', 'management-detail-data-students-kelas-10/*', 'management-edit-data-students-kelas-10/*', 'edit-check-list-kelas-jurusan-kls10/*') ? 'active' : '' }}">Management Siswa Kelas 10</a></li>
                     <li class="sub-item"><a href="{{route('management-students-kelas-11')}}" class="sub-link {{ request()->is('management-students-kelas-11','management-students-kelas-11-table/*', 'management-detail-data-students-kelas-11/*', 'management-edit-data-students-kelas-11/*', 'edit-check-list-kelas-jurusan-kls11/*') ? 'active' : '' }}">Management Siswa Kelas 11</a></li>
                     <li class="sub-item"><a href="{{route('management-students-kelas-12')}}" class="sub-link {{ request()->is('management-students-kelas-12','management-students-kelas-12-table/*', 'management-detail-data-students-kelas-12/*', 'management-edit-data-students-kelas-12/*', 'edit-check-list-kelas-jurusan-kls12/*') ? 'active' : '' }}">Management Siswa Kelas 12</a></li>
+                </ul>
+        </li><!-- br-menu-item -->
 
-
+        <li class="br-menu-item">
+                <a href="#" class="br-menu-link with-sub {{ request()->is('kehadiran-bulanan-siswa') ? 'active' : '' }}">
+                <i class="fa fa-tasks tx-17"></i>
+                <span class="menu-item-label">Data Kehadiran Siswa</span>
+                </a><!-- br-menu-link -->
+                <ul class="br-menu-sub nav flex-column">
+                    <li class="sub-item"><a href="{{route('kehadiran-bulanan-siswa')}}" class="sub-link {{ request()->is('kehadiran-bulanan-siswa') ? 'active' : '' }}">Kehadiran Bulanan Siswa</a></li>
                 </ul>
         </li><!-- br-menu-item -->
 
@@ -239,7 +254,7 @@
 
 
 
-
+    
     <!-- ########## START: MAIN PANEL ########## -->
     <div class="br-mainpanel">
         @yield('br-mainpanel')
@@ -284,9 +299,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     
     {{-- DateTimePicker --}}
-    {{-- <script src="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.full.js"></script>
+    <script src="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.full.js"></script>
     <script src="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.full.min.js"></script>
-    <script src="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.min.js"></script> --}}
+    <script src="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.min.js"></script>
 
 
 

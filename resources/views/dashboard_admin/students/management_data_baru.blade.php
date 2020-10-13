@@ -62,7 +62,13 @@
                     Action Management Data Baru
                 </div><!-- col-4 -->
 
-                <a href="{{route('download-format-import-students')}}" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
+                {{-- Download Format Metode Export --}}
+                {{-- <a href="{{route('download-format-import-students')}}" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
+                    <span><i class="fas fa-file-download pr-2"></i>Download Format Import</span>
+                </a> --}}
+
+                {{-- Download Format Metode Ambil Dari Public --}}
+                <a href="/folder-pendukung/Format-Import-Students.xlsx" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
                     <span><i class="fas fa-file-download pr-2"></i>Download Format Import</span>
                 </a>
 
@@ -105,14 +111,14 @@
                         @csrf
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <label class="col-md-4 col-form-label mt-2" for="nama_jurusan_cr"><h6 style="color: black;">Pilih Data Excel :</h6></label>
-                                        
-                                        <div class="col-md-8">
-                                            <input type="file" name="file_import" class="form-control" id="" placeholder=""  required >
-                                        </div>
-                                    </div>
+                                <div class="col-md-12 text-center">
+
+                                    <input type="file" name="file_import" id="file_import" class="inputfile" data-multiple-caption="{count} files selected" multiple>
+                                    <label for="file_import" class="tx-white bg-info">
+                                        <i class="icon ion-ios-upload-outline tx-24"></i>
+                                        <span>Choose a file...</span>
+                                    </label>
+
 
                                 </div>
                             </div>
@@ -215,6 +221,42 @@
         // Untuk Membuat Tooltip
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
+
+    <script>
+        // Cuma Untuk Input Tyle File Saja
+        $(function(){
+
+            'use strict';
+
+            $( '.inputfile' ).each( function()
+            {
+            var $input	 = $( this ),
+                $label	 = $input.next( 'label' ),
+                labelVal = $label.html();
+
+            $input.on( 'change', function( e )
+            {
+                var fileName = '';
+
+                if( this.files && this.files.length > 1 )
+                fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else if( e.target.value )
+                fileName = e.target.value.split( '\\' ).pop();
+
+                if( fileName )
+                $label.find( 'span' ).html( fileName );
+                else
+                $label.html( labelVal );
+            });
+
+            // Firefox bug fix
+            $input
+            .on( 'focus', function(){ $input.addClass( 'has-focus' ); })
+            .on( 'blur', function(){ $input.removeClass( 'has-focus' ); });
+            });
+
         });
     </script>
 @endpush

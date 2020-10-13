@@ -34,10 +34,20 @@ Route::get('/home', 'HomeController@index')->name('home');
     Route::get('user/not-active/{id}', "UserController@user_not_active")->name("user.not-active");
 // End Management User
 
-// START MASTER DATA
-    // Route School Identity
+// Start Route School Identity
     Route::resource('school-identity', 'SchoolIdentityController');
+// End Route School Identity
 
+// Start Route semester active
+    Route::resource('semester-active', 'SemesterActiveController');
+    Route::get('semester-active/active/{id}', "SemesterActiveController@semester_active_active")->name("semester-active.active");
+    Route::get('semester-active/not-active/{id}', "SemesterActiveController@semester_active_not_active")->name("semester-active.not-active");
+    Route::get('semester-active/delete/{id}',"SemesterActiveController@destroy")->name("semester-active.destroy");
+
+// end Route semester active
+
+
+// START MASTER DATA
     // Route Mapel
     Route::resource('mapel', 'MasterData\MapelController');
     Route::get('mapel/delete/{id}',"MasterData\MapelController@destroy")->name("mapel.destroy");
@@ -102,9 +112,6 @@ Route::get('/home', 'HomeController@index')->name('home');
     Route::get('management-students-set-active/{id}', "StudentsController@management_students_set_active")->name("management-students-set-active");
     Route::get('management-students-set-notactive/{id}', "StudentsController@management_students_set_notactive")->name("management-students-set-notactive");
 
-
-
-
     Route::get('/add-check-list-kelas-jurusan', 'StudentsController@add_check_list_kelas_jurusan')->name('add-check-list-kelas-jurusan');
     Route::get('/edit-check-list-kelas-jurusan-kls10/{id}', 'StudentsController@edit_check_list_kelas_jurusan')->name('edit-check-list-kelas-jurusan-kls10');
     Route::get('/edit-check-list-kelas-jurusan-kls11/{id}', 'StudentsController@edit_check_list_kelas_jurusan')->name('edit-check-list-kelas-jurusan-kls11');
@@ -114,8 +121,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
     Route::post('/check-list-kelas-jurusan-action', 'StudentsController@check_list_kelas_jurusan_action')->name('check-list-kelas-jurusan-action');
 
-
 // End Route Management Students
 
-
+// Start Data Kehadiran Siswa
+    Route::get('/kehadiran-bulanan-siswa', 'AbsentController@kehadiran_bulanan_siswa')->name('kehadiran-bulanan-siswa');
+// End Data Kehadiran Siswa
 

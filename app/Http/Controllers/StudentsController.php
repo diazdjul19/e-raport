@@ -204,7 +204,7 @@ class StudentsController extends Controller
         public function import_students(Request $request)
         {
             Excel::import(new \App\Imports\StudentsImport,$request->file('file_import'));
-            
+
             alert()->success('Success','Success Import');
             return redirect(route('management-data-baru'));
         }
