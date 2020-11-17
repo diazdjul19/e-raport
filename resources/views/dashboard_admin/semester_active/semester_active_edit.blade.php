@@ -116,7 +116,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tahun Ajaran</label>
-                                <input type="text" name="tahun_ajaran" class="form-control" id="exampleInputEmail1"  placeholder="Tahun Ajaran" value="{{$data->tahun_ajaran}}" required>
+                                <div class="input-group">
+                                    <input type="text"  name="tahun_ajaran_dari" class="date-picker-year form-control" id="" placeholder="" value="{{$thn_ajaran_dari}}" required autocomplete="off">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">/</div>
+                                    </div>
+                                    <input type="text"  name="tahun_ajaran_sampai" class="date-picker-year form-control" id="" placeholder="" value="{{$thn_ajaran_sampai}}" required autocomplete="off">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -129,3 +135,26 @@
         </div>
     </div>
 @endsection
+
+@push('footer-admin')
+    
+    <script>
+        $(function() {
+                $('.date-picker-year').datepicker({
+                    changeYear: true,
+                    showButtonPanel: true,
+                    dateFormat: 'yy',
+                    onClose: function(dateText, inst) { 
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).datepicker('setDate', new Date(year, 1));
+                    },
+                });
+                $(".date-picker-year").focus(function () {
+                    $(".ui-datepicker-month").hide();
+                    $(".ui-datepicker-calendar").hide();
+                    
+                });
+                
+            });
+    </script>
+@endpush

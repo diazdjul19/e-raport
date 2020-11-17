@@ -63,6 +63,10 @@ Route::get('/home', 'HomeController@index')->name('home');
     // Route Ekskul
     Route::resource('ekskul', 'MasterData\EkskulController');
     Route::get('ekskul/delete/{id}',"MasterData\EkskulController@destroy")->name("ekskul.destroy");
+
+     // Route Th Ajaran
+    Route::resource('thajaran', 'MasterData\ThAjaranController');
+    Route::get('thajaran/delete/{id}',"MasterData\ThAjaranController@destroy")->name("thajaran.destroy");
 // END MASTER DATA
 
 // Start Route Management Teacher
@@ -90,6 +94,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('/management-students-kelas-12', 'StudentsController@management_students_kelas_12')->name('management-students-kelas-12');
     Route::get('/management-students-kelas-12-table/{id}', 'StudentsController@management_students_kelas_all')->name('management-students-kelas-12-table');
+    
 
     // Download Format, Export, Import File Excel
     Route::get('/download-format-import-students', 'StudentsController@download_format_import_students')->name('download-format-import-students');
@@ -121,9 +126,36 @@ Route::get('/home', 'HomeController@index')->name('home');
 
     Route::post('/check-list-kelas-jurusan-action', 'StudentsController@check_list_kelas_jurusan_action')->name('check-list-kelas-jurusan-action');
 
+    // Search With ajax
+    Route::get('/search-ajax-kelas-10', 'StudentsController@search_ajax_all_kelas')->name('search-ajax-kelas-10');
+    Route::get('/search-ajax-kelas-11', 'StudentsController@search_ajax_all_kelas')->name('search-ajax-kelas-11');
+    Route::get('/search-ajax-kelas-12', 'StudentsController@search_ajax_all_kelas')->name('search-ajax-kelas-12');
+
+
 // End Route Management Students
 
 // Start Data Kehadiran Siswa
-    Route::get('/kehadiran-bulanan-siswa', 'AbsentController@kehadiran_bulanan_siswa')->name('kehadiran-bulanan-siswa');
+
+    // KEHADIRAN BULANAN SISWA
+    Route::get('/kehadiran-bulanan-kelas-siswa', 'AbsentController@kehadiran_bulanan_kelas_siswa')->name('kehadiran-bulanan-kelas-siswa');
+    Route::get('/absent-ajax-search-kelas', 'AbsentController@absent_ajax_search_kelas')->name('absent-ajax-search-kelas');
+
+    Route::get('/kehadiran-bulanan-siswa/{id}', 'AbsentController@kehadiran_bulanan_siswa')->name('kehadiran-bulanan-siswa');
+
+    Route::get('/download-format-excel-kehadiran-bulanan/{id}', 'AbsentController@download_format_excel_kehadiran_bulanan')->name('download-format-excel-kehadiran-bulanan');
+    Route::post('/import-kehadiran-bulanan', 'AbsentController@import_kehadiran_bulanan')->name('import-kehadiran-bulanan');
+    
+    // Search Absent
+    Route::get('/buka-absent-siswa', 'AbsentController@buka_absent_siswa')->name('buka-absent-siswa');
+    // PDF kehadiran bulanan
+    Route::get('/pdf-kehadiran-bulanan-siswa', 'AbsentController@pdf_kehadiran_bulanan_siswa')->name('pdf-kehadiran-bulanan-siswa');
+    // Excel kehadiran bulanan
+    Route::get('/excel-kehadiran-bulanan-siswa', 'AbsentController@excel_kehadiran_bulanan_siswa')->name('excel-kehadiran-bulanan-siswa');
+
+    // REKAPITULASI ABSENT
+    Route::get('/rekapitulasi-absent', 'AbsentController@rekapitulasi_absent')->name('rekapitulasi-absent');
+    Route::get('/buka-rekapulasi-absent', 'AbsentController@buka_rekapulasi_absent')->name('buka-rekapulasi-absent');
+
+
 // End Data Kehadiran Siswa
 

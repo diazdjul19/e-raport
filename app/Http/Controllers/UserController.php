@@ -41,42 +41,54 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-         // Membuat Validasi Dulu
+        // Membuat Validasi Dulu
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        
 
+        // Untuk handle error messagenya.
+        // biasakan pakai metode ini ya, try catch.
+        try {
 
-        // Membuat Data User
-        $data = new User();
-        $data->name = $request->name;
-        $data->email = $request->email;
-        $data->password = Hash::make($request->password);
-        $data->tempat_lahir = $request->tempat_lahir;
-        $data->tanggal_lahir = $request->tanggal_lahir;
-        $data->jenis_kelamin = $request->jenis_kelamin;
-        $data->no_hp = $request->no_hp;
-        $data->level = $request->level;
-        $data->foto_user = $request->foto_user;
-        $data->status = "not_active";
-    
-        if(isset($request->foto_user)){
-            $imageFile = $request->name.'/'.\Str::random(60).'.'.$request->foto_user->getClientOriginalExtension();
-            $image_path = $request->file('foto_user')->move(storage_path('app/public/user/'.$request->name), $imageFile);
+            // Fungsi DB::beginTransaction ini untuk melakukan pengecekan pada saat proses penginputan
+            // Jika ada proses yg salah atau error di function bawah, datanya jadi gk akan masuk atau 
+            // duplicate. biasakan juga pake ini ya. 👌
+            DB::beginTransaction();
 
-            $data->foto_user = $imageFile;
-        }
-        $data->save();
-        
-        if ($data) {
+            // Membuat Data User
+            $data = new User();
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->password = Hash::make($request->password);
+            $data->tempat_lahir = $request->tempat_lahir;
+            $data->tanggal_lahir = $request->tanggal_lahir;
+            $data->jenis_kelamin = $request->jenis_kelamin;
+            $data->no_hp = $request->no_hp;
+            $data->level = $request->level;
+            $data->foto_user = $request->foto_user;
+            $data->status = "not_active";
+
+            if (isset($request->foto_user)) {
+                $imageFile = $request->name . '/' . \Str::random(60) . '.' . $request->foto_user->getClientOriginalExtension();
+                $image_path = $request->file('foto_user')->move(storage_path('app/public/user/' . $request->name), $imageFile);
+
+                $data->foto_user = $imageFile;
+            }
+            $data->save();
+
+            // DB::commit() ini akan menginput data jika dari proses diatas tidak ada yg salah atau error.
+            DB::commit();
             $naus = $data->name;
-            toast("User '$naus' Berhasil Di Tambahkan",'success');
+            toast("User '$naus' Berhasil Di Tambahkan", 'success');
             return redirect(route('user.index'));
-        } else {
-            # code...
+        } catch (\Exception $e) {
+            // DB::rollback() yang akan mengembalikan data atau dihapus jika ada salah satu proses diatas ada yg
+            // error ataupun salah. Biasakan pakai Ini juga 
+            DB::rollback();
+            toast($e->getMessage(), 'error');
+            return redirect(route('user.index'));
         }
     }
 
@@ -113,39 +125,53 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = User::find($id);
-        $data->name = $request->get('name');
-        $data->email = $request->get('email');
-        $data->tempat_lahir = $request->get('tempat_lahir');
-        $data->tanggal_lahir = $request->get('tanggal_lahir');
-        $data->jenis_kelamin = $request->get('jenis_kelamin');
-        $data->no_hp = $request->get('no_hp');
-        $data->level = $request->get('level');
-        $data->status = $request->get('status');
+        try {
+            // Fungsi DB::beginTransaction ini untuk melakukan pengecekan pada saat proses penginputan
+            // Jika ada proses yg salah atau error di function bawah, datanya jadi gk akan masuk atau 
+            // duplicate. biasakan juga pake ini ya. 👌
+            DB::beginTransaction();
+
+            $data = User::find($id);
+            $data->name = $request->get('name');
+            $data->email = $request->get('email');
+            $data->tempat_lahir = $request->get('tempat_lahir');
+            $data->tanggal_lahir = $request->get('tanggal_lahir');
+            $data->jenis_kelamin = $request->get('jenis_kelamin');
+            $data->no_hp = $request->get('no_hp');
+            $data->level = $request->get('level');
+            $data->status = $request->get('status');
 
 
-        if ($request->password != $request->password_confirmation) {
-            \Session::flash('gagal', 'Password Tidak Sama');
+            if ($request->password != $request->password_confirmation) {
+                \Session::flash('gagal', 'Password Tidak Sama');
 
-            return redirect(route('user.edit', [$data->id ]));
-            
+                return redirect(route('user.edit', [$data->id]));
+            }
+
+            if (isset($request->password)) {
+                $data->password = Hash::make($request->password);
+            }
+
+
+            if (isset($request->foto_user)) {
+                $imageFile = $request->name . '/' . \Str::random(60) . '.' . $request->foto_user->getClientOriginalExtension();
+                $image_path = $request->file('foto_user')->move(storage_path('app/public/user/' . $request->name), $imageFile);
+
+                $data->foto_user = $imageFile;
+            }
+
+            $data->save();
+            DB::commit();
+
+            toast('Berhasil diperbarui', 'success');
+            return redirect(route('user.index'));
+        } catch (\Exception $e) {
+            // DB::rollback() yang akan mengembalikan data atau dihapus jika ada salah satu proses diatas ada yg
+            // error ataupun salah. Biasakan pakai Ini juga 
+            DB::rollback();
+            toast($e->getMessage(), 'error');
+            return redirect(route('user.index'));
         }
-
-        if (isset($request->password)) {
-            $data->password = Hash::make($request->password);
-        }
-
-
-        if(isset($request->foto_user)){
-            $imageFile = $request->name.'/'.\Str::random(60).'.'.$request->foto_user->getClientOriginalExtension();
-            $image_path = $request->file('foto_user')->move(storage_path('app/public/user/'.$request->name), $imageFile);
-
-            $data->foto_user = $imageFile;
-        }
-        
-        $data->save();
-
-        return redirect(route('user.index'));
     }
 
     /**
@@ -160,27 +186,34 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Biasakan untuk menggunakan fungsi default bawaan laravel untuk deletenya,
+     * dan juga gunakan metode DELETE diroutenya. Kalau ingin bikin function baru
+     * gunakan untuk function yg lain, karena untuk function Create Read Update Delete ini sudah ada
+     * jadi gunakan defaultnya biar rapih. 😊
+     *
+     * @param Request $request
+     * @return void
+     */
     public function select_delete_user(Request $request)
     {
         $select_delete = $request->get('select_delete');
 
         if ($select_delete == true) {
-            
+
             $data_confirm = User::whereIn('id', $select_delete)->get('id');
 
             if ($data_confirm == true) {
-                $delete_now = User::whereIn('id', $data_confirm)->delete(); 
-            }else {
+                $delete_now = User::whereIn('id', $data_confirm)->delete();
+            } else {
                 return "Gagal Menghapus Data :(";
             }
 
-            toast('Data Berhasil Di Hapus','info');
+            toast('Data Berhasil Di Hapus', 'info');
             return redirect(route('user.index'));
-
-        }else {
+        } else {
             return redirect(route('user.index'));
         }
-
     }
 
 

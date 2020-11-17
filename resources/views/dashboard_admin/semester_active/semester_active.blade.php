@@ -9,6 +9,7 @@
         </nav>
     </div><!-- br-pageheader -->
 
+
     {{-- br-title --}}
     <div class="br-pagetitle">
         <i class="far fa-calendar-alt" style="font-size:65px;color:#000;"></i>
@@ -93,7 +94,13 @@
                                 <div class="form-group row" style="margin:0px;">
                                     <label class="col-md-4 col-form-label" for="tahun_ajaran_cr"><h6 style="color: black;">Tahun Ajaran</h6></label>
                                     <div class="col-md-8">
-                                        <input type="text" name="tahun_ajaran" class="form-control" id="tahun_ajaran_cr" placeholder=""  style="height:30px;" required >
+                                        <div class="input-group">
+                                            <input type="text"  name="tahun_ajaran_dari" class="date-picker-year form-control" id="" placeholder=""  style="height:30px;" required autocomplete="off">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text" style="height: 30px;">/</div>
+                                            </div>
+                                            <input type="text"  name="tahun_ajaran_sampai" class="date-picker-year form-control" id="" placeholder=""  style="height:30px;" required autocomplete="off">
+                                        </div>
                                     </div>
                                     <span class="text-danger">{{ $errors->first('tahun_ajaran') }}</span>
 
@@ -179,7 +186,9 @@
                                     </span>
                                 @endif                                
                             </td>
-                            <td class="text-center pt-2">{{$d->tahun_ajaran}}</td>
+                            <td class="text-center pt-2">
+                                <span class="badge badge-light" style="font-size:12px;">{{$d->tahun_ajaran}}</span>
+                            </td>
                             <td class="text-center pt-2">
                                 <span class="badge badge-success" style="font-size:12px;">
                                     {{date('d M Y', strtotime($d->dari_tanggal))}}
@@ -342,4 +351,33 @@
             $('[data-toggle="tooltip"]').tooltip();   
         });
     </script>
+
+
+
+    <style>
+        .ui-datepicker {
+            z-index: 9999 !important;
+        }
+    </style>
+    
+    <script>
+        $(function() {
+                $('.date-picker-year').datepicker({
+                    changeYear: true,
+                    showButtonPanel: true,
+                    dateFormat: 'yy',
+                    onClose: function(dateText, inst) { 
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).datepicker('setDate', new Date(year, 1));
+                    },
+                });
+                $(".date-picker-year").focus(function () {
+                    $(".ui-datepicker-month").hide();
+                    $(".ui-datepicker-calendar").hide();
+                    
+                });
+                
+            });
+    </script>
+
 @endpush

@@ -166,6 +166,11 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         // Laravel Excel
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        // Wkhtmltopdf
+        Barryvdh\Snappy\ServiceProvider::class,
+
+
+        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -236,7 +241,12 @@ return [
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         // Laravel Excel
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        // Wkhtmltopdf
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
+
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

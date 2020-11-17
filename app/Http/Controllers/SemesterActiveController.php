@@ -43,7 +43,8 @@ class SemesterActiveController extends Controller
             'nama_kepsek' => 'required', 'string', 'max:255',
             'pts_pas' => 'required', 'string', 'max:255',
             'semester' => 'required', 'string', 'max:255',
-            'tahun_ajaran' => 'required', 'string', 'max:255',
+            'tahun_ajaran_dari' => 'required', 'date',
+            'tahun_ajaran_sampai' => 'required', 'date',
             'dari_tanggal' => 'required',
             'sampai_tanggal' => 'required',
             'tgl_pembagian_raport' => 'required',
@@ -54,12 +55,11 @@ class SemesterActiveController extends Controller
         $data->nip_kepsek = $request->nip_kepsek;
         $data->pts_pas = $request->pts_pas;
         $data->semester = $request->semester;
-        $data->tahun_ajaran = $request->tahun_ajaran;
+        $data->tahun_ajaran = $request->tahun_ajaran_dari."/".$request->tahun_ajaran_sampai;
         $data->dari_tanggal = $request->dari_tanggal;
         $data->sampai_tanggal = $request->sampai_tanggal;
         $data->tgl_pembagian_raport = $request->tgl_pembagian_raport;
         $data->status = "not_active";
-        
         $data->save();
         alert()->success('Success','Data Berhasil Di Tambahkan');
         return redirect(route('semester-active.index'));
@@ -87,7 +87,11 @@ class SemesterActiveController extends Controller
     public function edit($id)
     {
         $data = MsSemesterActive::find($id);
-        return view('dashboard_admin.semester_active.semester_active_edit', compact('data'));
+        
+        $thn_ajaran_dari = substr( $data->tahun_ajaran,0,4);
+        $thn_ajaran_sampai = substr( $data->tahun_ajaran,5,4);
+
+        return view('dashboard_admin.semester_active.semester_active_edit', compact('data', 'thn_ajaran_dari', 'thn_ajaran_sampai'));
     }
 
     /**
@@ -104,7 +108,8 @@ class SemesterActiveController extends Controller
             'nama_kepsek' => 'required', 'string', 'max:255',
             'pts_pas' => 'required', 'string', 'max:255',
             'semester' => 'required', 'string', 'max:255',
-            'tahun_ajaran' => 'required', 'string', 'max:255',
+            'tahun_ajaran_dari' => 'required', 'date',
+            'tahun_ajaran_sampai' => 'required', 'date',
             'dari_tanggal' => 'required',
             'sampai_tanggal' => 'required',
             'tgl_pembagian_raport' => 'required',
@@ -115,11 +120,11 @@ class SemesterActiveController extends Controller
         $data->nip_kepsek = $request->get('nip_kepsek');
         $data->pts_pas = $request->get('pts_pas');
         $data->semester = $request->get('semester');
-        $data->tahun_ajaran = $request->get('tahun_ajaran');
+        $data->tahun_ajaran = $request->get('tahun_ajaran_dari')."/". $request->get('tahun_ajaran_sampai');
         $data->dari_tanggal = $request->get('dari_tanggal');
         $data->sampai_tanggal = $request->get('sampai_tanggal');
         $data->tgl_pembagian_raport = $request->get('tgl_pembagian_raport');
-
+        
         $data->save();
         alert()->success('Success','Data Berhasil Di Edit');
         return redirect(route('semester-active.index'));

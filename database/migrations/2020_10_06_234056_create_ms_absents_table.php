@@ -15,13 +15,14 @@ class CreateMsAbsentsTable extends Migration
     {
         Schema::create('ms_absents', function (Blueprint $table) {
             $table->id();
-            $table->string('absent_kelas')->nullable();
             $table->string('th_pelajaran')->nullable();
             $table->string('semester')->nullable();
-            $table->date('tgl_bln_thn')->nullable();
+            $table->string('bln_dwin')->nullable();
+            $table->year('thn_dwin')->nullable();
 
             $table->string('nama_siswa')->nullable();
             $table->string('nis_siswa')->nullable();
+            $table->integer('kelas_siswa')->nullable();
             $table->string('jml_sakit_bln')->nullable();
             $table->string('jml_izin_bln')->nullable();
             $table->string('jml_alpa_bln')->nullable();

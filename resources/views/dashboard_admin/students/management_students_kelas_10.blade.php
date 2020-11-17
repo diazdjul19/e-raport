@@ -17,36 +17,57 @@
             <h4>Management Siswa Kelas 10</h4>
             <p class="mg-b-0">Aplikasi E-Raport Berbasis Web SMKN 4 Kota Bekasi.</p>
         </div>
+
+        <div class="col-sm-4 mb-3 ml-auto mb-3 mb-sm-0 mt-1 btn-sm" >
+            <div class="input-group">
+                    <input type="text" name="" id="example_search" class="form-control" placeholder="Search  ...">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="reload" ><i class="fa fa-search"></i></button>
+                    </div>
+                </div><!-- input-group -->
+        </div><!-- col-4 -->
     </div>
 
 
     <div class="br-pagebody pd-x-20 pd-sm-x-30">
-        <div class="row row-sm mg-t-20">
-
-            @foreach ($kelas_10 as $kls10)
-                <div class="col-sm-6 col-lg-4">
-                    <br>
-                    <div class="card shadow-base bd-0">
-                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                        <h6 class="card-title tx-uppercase tx-12 mg-b-0">{{$kls10->jurusan_kelas}}</h6>
-                        <span class="tx-12 tx-uppercase">{{date('D, d M Y')}}</span>
-                    </div><!-- card-header -->
-                    <div class="card-body">
-                        <h4 class="tx-sm tx-inverse tx-medium mg-b-1">{{$kls10->nama_kelas}}</h4>
-                        <p class="tx-12"><span class="tx-primary">Tingkat : {{$kls10->tingkat_kelas}}</span> - <span class="tx-danger">Max : {{$kls10->max_siswa}} Siswa</span> </p>
-
-                        <a href="{{route('management-students-kelas-10-table', $kls10->id)}}">
-                            <p class="tx-13 mg-b-0 mg-t-15"><span class="tx-success">Selengkap-nya <i class="fa fa-arrow-right"></i></span></p>
-                        </a>
-                    </div><!-- card-body -->
-                    </div><!-- card -->
-                </div><!-- col-4 -->
-            @endforeach
+        <div class="row row-sm mg-t-20 x_include">
+            @include('dashboard_admin.students.search_ajax_kelas_10')
         </div>
     </div>
 
-
-    
-    
-
 @endsection
+
+@push('footer-admin')
+    <script>
+        // Live search with ajax
+        $(document).ready(function(){
+
+            function fetch_data(search="") {
+                $.ajax({    
+                    url:BASE_URL+"/search-ajax-kelas-10?search="+search,
+                    success:function(data){
+                        $('.x_include').html(data);
+                    }
+                    
+                })
+            }
+
+            $(document).on('keyup', '#example_search', function(){
+                var search = $('#example_search').val();
+                fetch_data(search);
+                
+                // if (search == false) {
+                //     location.reload();
+                // }
+                
+            });
+        });
+    </script>
+
+    <script>
+        // Untuk Membuat Tooltip
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
+@endpush

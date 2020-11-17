@@ -98,39 +98,39 @@
 
             <!-- Modal Import Data Siswa -->
             <div class="modal fade" id="ImporttDataSiswa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Import Data Siswa</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    
-                    <form action="{{route('import-students')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12 text-center">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Import Data Siswa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        
+                        <form action="{{route('import-students')}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
 
-                                    <input type="file" name="file_import" id="file_import" class="inputfile" data-multiple-caption="{count} files selected" multiple>
-                                    <label for="file_import" class="tx-white bg-info">
-                                        <i class="icon ion-ios-upload-outline tx-24"></i>
-                                        <span>Choose a file...</span>
-                                    </label>
+                                        <input type="file" name="file_import" id="file_import" class="inputfile" data-multiple-caption="{count} files selected" multiple>
+                                        <label for="file_import" class="tx-white bg-info">
+                                            <i class="icon ion-ios-upload-outline tx-24"></i>
+                                            <span>Choose a file...</span>
+                                        </label>
 
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-outline-primary btn-sm">Import</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Import</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
             <form action="select-delete-data-students" method="post" >
                 @csrf

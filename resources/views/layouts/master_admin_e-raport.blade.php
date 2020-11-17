@@ -23,6 +23,10 @@
             });
         </script>
 
+        <script>
+            BASE_URL="<?php echo url('') ?>"
+        </script>
+
         {{-- 
         <script
             src="js/jquery-3.4.1.min.js">
@@ -31,7 +35,7 @@
 
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.min.js"></script> --}}
 
-
+        
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -89,6 +93,8 @@
 
     {{-- DateTimePicker --}}
     <link rel="stylesheet" href="/bracket-master/app/js/datetimepicker/jquery.datetimepicker.min.css">
+
+    
 </head>
 
 <body>
@@ -115,7 +121,7 @@
         </li><!-- br-menu-item -->
 
         <li class="br-menu-item">
-            <a href="semester-active" class="br-menu-link {{ request()->is('semester-active') ? 'active' : '' }}">
+            <a href="{{route('semester-active.index')}}" class="br-menu-link {{ request()->is('semester-active', 'semester-active/*/edit') ? 'active' : '' }}">
             <i class="far fa-calendar-alt tx-18"></i>
             <span class="menu-item-label">Set Semester Aktif</span>
             </a><!-- br-menu-link -->
@@ -132,7 +138,7 @@
         </li><!-- br-menu-item -->
 
         <li class="br-menu-item">
-                <a href="#" class="br-menu-link with-sub {{ request()->is('mapel', 'kelas', 'ekskul', 'jurusan') ? 'active' : '' }}">
+                <a href="#" class="br-menu-link with-sub {{ request()->is('mapel', 'kelas', 'ekskul', 'jurusan', 'thajaran') ? 'active' : '' }}">
                 <i class="menu-item-icon icon ion-folder tx-20"></i>
                 <span class="menu-item-label">Management Master</span>
                 </a><!-- br-menu-link -->
@@ -172,12 +178,13 @@
         </li><!-- br-menu-item -->
 
         <li class="br-menu-item">
-                <a href="#" class="br-menu-link with-sub {{ request()->is('kehadiran-bulanan-siswa') ? 'active' : '' }}">
+                <a href="#" class="br-menu-link with-sub {{ request()->is('kehadiran-bulanan-kelas-siswa', 'kehadiran-bulanan-siswa/*', 'buka-absent-siswa',  'rekapitulasi-absent') ? 'active' : '' }}">
                 <i class="fa fa-tasks tx-17"></i>
                 <span class="menu-item-label">Data Kehadiran Siswa</span>
                 </a><!-- br-menu-link -->
                 <ul class="br-menu-sub nav flex-column">
-                    <li class="sub-item"><a href="{{route('kehadiran-bulanan-siswa')}}" class="sub-link {{ request()->is('kehadiran-bulanan-siswa') ? 'active' : '' }}">Kehadiran Bulanan Siswa</a></li>
+                    <li class="sub-item"><a href="{{route('kehadiran-bulanan-kelas-siswa')}}" class="sub-link {{ request()->is('kehadiran-bulanan-kelas-siswa', 'kehadiran-bulanan-siswa/*', 'buka-absent-siswa') ? 'active' : '' }}">Kehadiran Bulanan Siswa</a></li>
+                    <li class="sub-item"><a href="{{route('rekapitulasi-absent')}}" class="sub-link {{ request()->is('rekapitulasi-absent') ? 'active' : '' }}">Rekapitulasi Absent</a></li>
                 </ul>
         </li><!-- br-menu-item -->
 
@@ -270,7 +277,7 @@
             <div class="footer-right d-flex align-items-center">
                 <span class="tx-uppercase mg-r-10">Check:</span>
                 <a target="_blank" class="pd-x-5" href=""><i class="fab fa-facebook tx-20"></i></a>
-                <a target="_blank" class="pd-x-5" href=""><i class="fab fa-instagram tx-20"></i></a>
+                <a target="_blank" class="pd-x-5" href="https://www.instagram.com/diazdjuliansyah/"><i class="fab fa-instagram tx-20"></i></a>
             </div>
         </footer>
     </div><!-- br-mainpanel -->
@@ -286,6 +293,7 @@
 
     <script src="/bracket-master/app/lib/jquery-steps/build/jquery.steps.min.js"></script>
     <script src="/bracket-master/app/lib/parsleyjs/parsley.min.js"></script>
+    
 
     {{-- Datatable --}}
     <script src="/bracket-master/app/lib/datatables.net/js/jquery.dataTables.min.js"></script>
