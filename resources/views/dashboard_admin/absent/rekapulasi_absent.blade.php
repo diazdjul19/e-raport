@@ -58,31 +58,21 @@
                                             </div>
 
 
-                                            <div class="col-md-3 ">
+                                            <div class="col-md-5 ">
                                                 <div class="form-group row">                      
                                                     <div class="col-md-12">
                                                         <label style="color: black;font-weight:bold;">Rentang Bulan :</label>
                                                         <div class="input-group">
-                                                            <input type="text"  name="dari_bln_dwin" class="date-picker-month form-control" id="" placeholder="Dari Bln" required autocomplete="off">
+                                                            <input type="month"  name="dari_bln" class="form-control" id="" placeholder="" required autocomplete="off">
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">-</div>
                                                             </div>
-                                                            <input type="text"  name="sampai_bln_dwin" class="date-picker-month form-control" id="" placeholder="Sampai Bln" required autocomplete="off">
+                                                            <input type="month"  name="sampai_bln" class="date-picker-month form-control" id="" placeholder="" required autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-
-                                            <div class="col-md-2 ">
-                                                <div class="form-group row">                      
-                                                    <div class="col-md-12">
-                                                        <label style="color: black;font-weight:bold;">Pilih Tahun :</label>
-                                                        <input type="text" readonly name="thn_dwin" class="date-picker-year form-control" id=""  placeholder="" autocomplete="off" >
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                        
                                             <div class="col-md-3 ">
                                                 <div class="form-group row">                      
                                                     <div class="col-md-12">
@@ -142,7 +132,8 @@
     </div>
 
     
-        {{-- <div class="br-pagebody">
+    @if (isset($data))
+        <div class="br-pagebody">
             <div class="br-section-wrapper">
                 <div class="d-sm-flex align-items-center mb-4">
                     
@@ -151,11 +142,11 @@
                     </div><!-- col-4 -->
 
                     
-                    <a href="" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
+                    <a href="{{route("excel-rekapulasi-absent")}}?{{ $data_url }}" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
                         <span><i class="fas fa-file-excel pr-2"></i>Download Excel</span>
                     </a>
 
-                    <a href="" class="btn btn-outline-danger ml-1 mb-3 mb-sm-0 mt-1 btn-sm">
+                    <a href="{{route("pdf-rekapulasi-absent")}}?{{ $data_url }}" class="btn btn-outline-danger ml-1 mb-3 mb-sm-0 mt-1 btn-sm">
                         <span><i class="fas fa-file-pdf pr-2"></i>Download PDF</span>
                     </a>
 
@@ -167,19 +158,17 @@
                     <table id="table_id" class="table text-center" border="1" >
                         <thead style="background-color: #d6d6d6;">
                             <tr>
-                                <th rowspan="2">No</th>
-                                <th class="text-left" rowspan="2">Nama Siswa</th>
-                                <th rowspan="2">NISN</th>
-                                <th rowspan="2">Kelas</th>
-                                <th colspan="4">
-                                    Ketidakhadiran 
-                                    Tahun <span class="badge badge-primary mb-1" style="font-size:12px;">...</span>
-                                    
+                                <th style="vertical-align: middle;" rowspan="2">No</th>
+                                <th style="vertical-align: middle;" class="text-left" rowspan="2">Nama Siswa</th>
+                                <th style="vertical-align: middle;" rowspan="2">NISN</th>
+                                <th style="vertical-align: middle;" rowspan="2">Kelas</th>
+                                <th style="vertical-align: middle;" colspan="4">
+                                    Data Absensi 
                                     <br>
-                                    Dari Bln <span class="badge badge-success" style="font-size:12px;">...</span>
-                                    Sampai Bln <span class="badge badge-danger" style="font-size:12px;">...</span>
+                                    Dari <span class="badge badge-success" style="font-size:12px;">{{date('d F Y', strtotime($dari_bln))}}</span>
+                                    Sampai <span class="badge badge-danger" style="font-size:12px;">{{date('d F Y', strtotime($sampai_bln))}}</span>
                                 </th>
-                                <th style="" rowspan="2">Koleksi</th>
+                                <th style="vertical-align: middle;" rowspan="2">Koleksi</th>
                             </tr>
                             <tr>
                                 <th class="" style="background-color: lightgreen;">Sakit</th>
@@ -190,16 +179,17 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($search as $item)
+                            @foreach ($data as $item)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td class="text-left">{{$item->nama_siswa}}</td>
                                     <td>{{$item->nis_siswa}}</td>
-                                    <td>{{$data->nama_kelas}}</td>
-                                    <td style="background-color: #ccf9cc; color:black;">{{$item->jml_sakit_bln}}</td>
-                                    <td style="background-color: #ffff8c; color:black;">{{$item->jml_izin_bln}}</td>
-                                    <td style="background-color: #ff9e9e; color:black;">{{$item->jml_alpa_bln}}</td>
-                                    <td style="background-color: #BFF5F6; color:black; font-weight:bold;">{{$item->jml_sakit_bln + $item->jml_izin_bln + $item->jml_alpa_bln}}</td>
+                                    <td>{{$kelas->nama_kelas}}</td>
+                                    <td style="background-color: #ccf9cc; color:black;">{{$item->sakit}}</td>
+                                    <td style="background-color: #ffff8c; color:black;">{{$item->izin}}</td>
+                                    <td style="background-color: #ff9e9e; color:black;">{{$item->alpa}}</td>
+                                    <td style="background-color: #BFF5F6; color:black; font-weight:bold;">{{$item->sakit + $item->izin + $item->alpa}}</td>
+                                    <td><a href="">Lihat Detail</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -209,8 +199,8 @@
 
                 </div>
             </div>
-        </div>    
-        --}}
+        </div> 
+    @endif
     
 @endsection
 
@@ -231,7 +221,7 @@
     </script>
 
 
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             $(function() {
                 $('.date-picker-month').datepicker({
@@ -269,7 +259,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
     
 

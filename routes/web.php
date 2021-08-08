@@ -17,12 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Auth::routes();
+Auth::routes();
 
 // Membayasi Route yang di (false)
-Auth::routes([
-    'register' => false,
-]);
+// Auth::routes([
+//     'register' => false,
+// ]);
 
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -155,7 +155,10 @@ Route::get('/home', 'HomeController@index')->name('home');
     // REKAPITULASI ABSENT
     Route::get('/rekapitulasi-absent', 'AbsentController@rekapitulasi_absent')->name('rekapitulasi-absent');
     Route::get('/buka-rekapulasi-absent', 'AbsentController@buka_rekapulasi_absent')->name('buka-rekapulasi-absent');
-
+    // PDF Rekapulasi Absent
+    Route::get('/pdf-rekapulasi-absent', 'AbsentController@pdf_rekapulasi_absent')->name('pdf-rekapulasi-absent');
+    // Excel Rekapulasi Absent
+    Route::get('/excel-rekapulasi-absent', 'AbsentController@excel_rekapulasi_absent')->name('excel-rekapulasi-absent');
 
 // End Data Kehadiran Siswa
 

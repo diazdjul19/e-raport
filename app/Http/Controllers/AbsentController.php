@@ -12,11 +12,12 @@ use App\Models\MsSemesterActive;
 // export excel
 use App\Exports\DownloadFormatExcelKehadiranSiswa;
 use App\Exports\ExcelKehadiranBulananSiswa;
+use App\Exports\ExcelRekapulasiAbsent;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Carbon\Carbon;
 
-
+use DB;
 
 class AbsentController extends Controller
 {
@@ -234,9 +235,78 @@ class AbsentController extends Controller
         // data url untuk pdf
         $data_url = $request->fullUrl();
         $data_url = \Str::substr($data_url, 44);
+
+
+        // data pendukung
+        $kelas = MsKelas::where('id', $request->kelas_siswa)->first();
+        $get_kelas_siswa = MsKelas::orderBy('nama_kelas', 'asc')->get();
+        $get_semester_active = MsSemesterActive::where('status', 'active')->get();
+        $get_th_pelajaran = MsSemesterActive::get('tahun_ajaran');
+
+
+        $this->validate($request,[
+            'kelas_siswa' => 'required',
+            'semester' => 'required',
+            'th_pelajaran' => 'required',
+            'dari_bln' => 'required',
+            'sampai_bln' => 'required',
+        ]);
+
+        $dari_bln = $request->dari_bln."-01";
+        $sampai_bln = $request->sampai_bln."-31";
+
+        $data = MsAbsent::whereBetween('created_at',[$dari_bln, $sampai_bln])
+        ->where('kelas_siswa',$request->kelas_siswa)
+        ->where('th_pelajaran',$request->th_pelajaran)
+        ->where('semester',$request->semester)
+        ->select(DB::raw('id, nama_siswa, nis_siswa, kelas_siswa,  SUM(jml_sakit_bln) as sakit, SUM(jml_izin_bln) as izin, SUM(jml_alpa_bln) as alpa'))
+        ->groupBy('nis_siswa')
+        ->get(); 
+
+        return view('dashboard_admin.absent.rekapulasi_absent', compact('data_url', 'kelas', 'get_kelas_siswa','get_semester_active', 'get_th_pelajaran' ,    'data', 'dari_bln', 'sampai_bln'));
         
-        dd($data_url);
+        
     }
+
+    public function pdf_rekapulasi_absent(Request $request)
+    {
+        $this->validate($request,[
+            'kelas_siswa' => 'required',
+            'semester' => 'required',
+            'th_pelajaran' => 'required',
+            'dari_bln' => 'required',
+            'sampai_bln' => 'required',
+        ]);
+
+        $dari_bln = $request->dari_bln."-01";
+        $sampai_bln = $request->sampai_bln."-31";
+        $semester = $request->semester;
+        $th_pelajaran = $request->th_pelajaran;
+        $kelas = MsKelas::where('id', $request->kelas_siswa)->first();
+
+        $data = MsAbsent::whereBetween('created_at',[$dari_bln, $sampai_bln])
+        ->where('kelas_siswa',$request->kelas_siswa)
+        ->where('th_pelajaran',$request->th_pelajaran)
+        ->where('semester',$request->semester)
+        ->select(DB::raw('id, nama_siswa, nis_siswa, kelas_siswa,  SUM(jml_sakit_bln) as sakit, SUM(jml_izin_bln) as izin, SUM(jml_alpa_bln) as alpa'))
+        ->groupBy('nis_siswa')
+        ->get(); 
+
+        
+        $pdf = \PDF::loadView('pdf.pdf_rekapulasi_absent',  compact('dari_bln', 'sampai_bln', 'semester', 'th_pelajaran', 'kelas', 'data'))->setPaper('A4')->setOrientation('portrait');
+        return $pdf->download("Rekapulasi Absent $request->kelas_siswa.pdf");
+
+    }
+
+    public function excel_rekapulasi_absent(Request $request)
+    {
+        $data_kelas = MsKelas::where('id', $request->kelas_siswa)->first();
+        $tgl = date('M Y');
+        return Excel::download(new ExcelRekapulasiAbsent($request->kelas_siswa, $request->semester, $request->th_pelajaran, $request->dari_bln, $request->sampai_bln), "Excel Rekapulasi Absent $data_kelas->nama_kelas.xlsx");
+    }
+
+
+
 
 
     // /**

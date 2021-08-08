@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use Auth;
+use DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 

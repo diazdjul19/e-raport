@@ -178,13 +178,13 @@
         </li><!-- br-menu-item -->
 
         <li class="br-menu-item">
-                <a href="#" class="br-menu-link with-sub {{ request()->is('kehadiran-bulanan-kelas-siswa', 'kehadiran-bulanan-siswa/*', 'buka-absent-siswa',  'rekapitulasi-absent') ? 'active' : '' }}">
+                <a href="#" class="br-menu-link with-sub {{ request()->is('kehadiran-bulanan-kelas-siswa', 'kehadiran-bulanan-siswa/*', 'buka-absent-siswa',  'rekapitulasi-absent', 'buka-rekapulasi-absent') ? 'active' : '' }}">
                 <i class="fa fa-tasks tx-17"></i>
                 <span class="menu-item-label">Data Kehadiran Siswa</span>
                 </a><!-- br-menu-link -->
                 <ul class="br-menu-sub nav flex-column">
                     <li class="sub-item"><a href="{{route('kehadiran-bulanan-kelas-siswa')}}" class="sub-link {{ request()->is('kehadiran-bulanan-kelas-siswa', 'kehadiran-bulanan-siswa/*', 'buka-absent-siswa') ? 'active' : '' }}">Kehadiran Bulanan Siswa</a></li>
-                    <li class="sub-item"><a href="{{route('rekapitulasi-absent')}}" class="sub-link {{ request()->is('rekapitulasi-absent') ? 'active' : '' }}">Rekapitulasi Absent</a></li>
+                    <li class="sub-item"><a href="{{route('rekapitulasi-absent')}}" class="sub-link {{ request()->is('rekapitulasi-absent', 'buka-rekapulasi-absent') ? 'active' : '' }}">Rekapitulasi Absent</a></li>
                 </ul>
         </li><!-- br-menu-item -->
 

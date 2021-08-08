@@ -17,16 +17,16 @@
         <table id="table_id" class="table text-center pt-2 pb-2" border="1"  >
             <thead style="background-color: #d6d6d6;">
                 <tr>
-                    <th rowspan="2">No</th>
-                    <th rowspan="2">Nama Siswa</th>
-                    <th rowspan="2">NISN</th>
-                    <th rowspan="2">Kelas</th>
-                    <th colspan="3">
+                    <th style="vertical-align: middle;" rowspan="2">No</th>
+                    <th style="vertical-align: middle;" rowspan="2">Nama Siswa</th>
+                    <th style="vertical-align: middle;" rowspan="2">NISN</th>
+                    <th style="vertical-align: middle;" rowspan="2">Kelas</th>
+                    <th style="vertical-align: middle;" colspan="3">
                         Ketidakhadiran
                         Bulan <span class="badge badge-primary" style="font-size:12px;">{{$bln_dwin}} </span>
                         Thn <span class="badge badge-primary" style="font-size:12px;">{{$thn_dwin}} </span>
                     </th>
-                    <th style="background-color: #0866C6; color:white;" rowspan="2">Jumlah</th>
+                    <th style="background-color: #0866C6; color:white; vertical-align: middle;" rowspan="2">Jumlah</th>
                 </tr>
                 <tr>
                     <th style="background-color: lightgreen;">Sakit</th>

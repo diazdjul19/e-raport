@@ -27,12 +27,14 @@ class SchoolIdentityController extends Controller
         }
 
 
-        // For Update
-        if ($data_id != null) {
+        if ($data_id == null) {
+            return view('dashboard_admin.school_identity.school_identity', compact('random_string', 'data_id'));
+        }elseif ($data_id != null) {
             $data_edit = MsSchoolIdentity::where('NPSN', $data_id->NPSN)->first();
+            return view('dashboard_admin.school_identity.school_identity', compact('random_string', 'data_id', 'data_edit'));
+
         }
         
-        return view('dashboard_admin.school_identity.school_identity', compact('random_string', 'data_id', 'data_edit'));
     }
 
     /**
@@ -75,6 +77,11 @@ class SchoolIdentityController extends Controller
 
             $data->logo_sekolah = $imageFile;
         }
+
+        
+        $data->iframe_sekolah = $request->iframe_sekolah;
+
+        
         $data->save();
 
         \Session::flash('success_create', "Data Identitas Sekolah $request->nama_sekolah Berhasil Di Publish");
@@ -127,12 +134,17 @@ class SchoolIdentityController extends Controller
             $data->kota_kabupaten = $request->get('kota_kabupaten');
             $data->provinsi = $request->get('provinsi');
 
+
             if(isset($request->logo_sekolah)){
                 $imageFile = $request->nama_sekolah.'/'.\Str::random(60).'.'.$request->logo_sekolah->getClientOriginalExtension();
                 $image_path = $request->file('logo_sekolah')->move(storage_path('app/public/logo_sekolah/'.$request->nama_sekolah), $imageFile);
 
                 $data->logo_sekolah = $imageFile;
             }
+
+            $data->iframe_sekolah = $request->get('iframe_sekolah');
+            
+
             $data->save();
 
             \Session::flash('success', "Data Identitas Sekolah $data->nama_sekolah Berhasil Di Publish");

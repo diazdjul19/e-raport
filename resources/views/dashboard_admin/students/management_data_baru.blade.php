@@ -63,14 +63,14 @@
                 </div><!-- col-4 -->
 
                 {{-- Download Format Metode Export --}}
-                {{-- <a href="{{route('download-format-import-students')}}" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
-                    <span><i class="fas fa-file-download pr-2"></i>Download Format Import</span>
-                </a> --}}
-
-                {{-- Download Format Metode Ambil Dari Public --}}
-                <a href="/folder-pendukung/Format-Import-Students.xlsx" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
+                <a href="{{route('download-format-import-students')}}" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
                     <span><i class="fas fa-file-download pr-2"></i>Download Format Import</span>
                 </a>
+
+                {{-- Download Format Metode Ambil Dari Public --}}
+                {{-- <a href="/folder-pendukung/Format-Import-Students.xlsx" class="btn btn-outline-success ml-auto mb-3 mb-sm-0 mt-1 btn-sm">
+                    <span><i class="fas fa-file-download pr-2"></i>Download Format Import</span>
+                </a> --}}
 
                 <button type="button" class="btn btn-outline-success ml-1 mb-3 mb-sm-0 mt-1 btn-sm" data-toggle="modal" data-target="#ImporttDataSiswa">
                     <span><i class="fas fa-file-upload pr-2"></i>Import Data Siswa</span>  

@@ -229,9 +229,19 @@
             </div>
 
             <div class="col-sm-8 mt-1">
-                <div class="card bd-0 shadow-base pd-20">
+                {{-- <div class="card bd-0 shadow-base pd-20">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.2633759019077!2d106.92984501431162!3d-6.359947563986839!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6993411a5d5955%3A0x3070600ac1dee970!2sSMK%20Negeri%204%20Kota%20Bekasi!5e0!3m2!1sid!2sid!4v1571283969085!5m2!1sid!2sid" width="100%" height="450px" frameborder="0" style="border:0;" allowfullscreen="">
                     </iframe>
+                </div><!-- card --> --}}
+
+                <div class="card bd-0 shadow-base pd-20">
+                    @if ($data_iframe == true)
+                        <span >
+                            {!! $data_iframe->iframe_sekolah !!}
+                        </span>
+                    @elseif ($data_iframe == false)
+                        <span>Data IFRAME Belum Di Set.</span>
+                    @endif
                 </div><!-- card -->
             </div>
         </div><!-- row -->

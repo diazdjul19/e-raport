@@ -43,6 +43,7 @@ class CreateMsStudentsTable extends Migration
             $table->string('nomor_telpon_rumah')->nullable();
 
             $table->integer('di_terima_di_kelas')->nullable();
+            $table->date('di_terima_pada_tanggal')->nullable();
             $table->integer('sekarang_kelas')->nullable();
 
             $table->string('username')->nullable();

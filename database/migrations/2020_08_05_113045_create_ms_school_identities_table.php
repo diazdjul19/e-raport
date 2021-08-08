@@ -26,6 +26,7 @@ class CreateMsSchoolIdentitiesTable extends Migration
             $table->string('no_telpon_sekolah');
             $table->string('email_sekolah');
             $table->string('logo_sekolah')->nullable();
+            $table->text('iframe_sekolah')->nullable();
             $table->timestamps();
         });
     }

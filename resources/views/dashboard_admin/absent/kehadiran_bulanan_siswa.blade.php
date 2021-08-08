@@ -260,7 +260,7 @@
                                     Bulan <span class="badge badge-primary" style="font-size:12px;">{{$bln_dwin}} </span>
                                     Thn <span class="badge badge-primary" style="font-size:12px;">{{$thn_dwin}} </span>
                                 </th>
-                                <th style="vertical-align: middle;" style="background-color: #0866C6; color:white;" rowspan="2">Jumlah</th>
+                                <th style="background-color: #0866C6; color:white; vertical-align: middle;" rowspan="2">Jumlah</th>
                             </tr>
                             <tr>
                                 <th style="background-color: lightgreen;">Sakit</th>

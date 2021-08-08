@@ -138,6 +138,15 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">IFRAME Sekolah<span></label>
+                                            <input type="text" name="iframe_sekolah" class="form-control" id="exampleInputEmail1"  placeholder="Set Iframe Sekolah (Ukuran Ideal Width: 100%, Height: 450px)"  value="">
+                                        </div>
+                                    </div>
+                                </div>
+
 
 
                                 <button type="submit" class="btn btn-primary btn-with-icon mt-3">
@@ -241,6 +250,15 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Provinsi <span style="color:red;"> *</span></label>
                                             <input type="text" name="provinsi" class="form-control" id="exampleInputEmail1"  placeholder="Provinsi" required value="{{$data_edit->provinsi}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">IFRAME Sekolah<span></label>
+                                            <input type="text" name="iframe_sekolah" class="form-control" id="exampleInputEmail1"  placeholder="Set Iframe Sekolah (Ukuran Ideal Width: 100%, Height: 450px)"  value="{{$data_edit->iframe_sekolah}}">
                                         </div>
                                     </div>
                                 </div>

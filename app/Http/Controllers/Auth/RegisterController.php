@@ -68,6 +68,10 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+
+            // TAMBAHAN SAJA JIKA PADA SAAT REGISTER OTOMATIS DAPAT LAVER ADMIN
+            'level' => "A",
+            'status' => "active",
         ]);
     }
 }
