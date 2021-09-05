@@ -169,7 +169,17 @@
                     </div><!-- card-header -->
                     <div class="card-body">
                         <div class="text-center">
-                            <img class="img-fluid rounded-circle " style="width:130px;height:135px;" src="{{url('/storage/user/'.Auth::user()->foto_user)}}" alt="">
+                            @if (Auth::user()->foto_user == true)   
+                                {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                <img class="img-fluid rounded-circle " style="width:130px;height:135px;" src="{{url('/storage/user/'.Auth::user()->foto_user)}}" alt="">
+
+            
+                                {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                <img class="img-fluid rounded-circle " style="width:130px;height:135px;" src="{{Auth::user()->foto_user}}" alt="">
+
+                            @else
+                                <a href=""><img src="/folder-pendukung/user-polos.png" class="img-fluid rounded-circle " style="width:130px;height:135px;" alt=""></a>
+                            @endif
                         </div>
 
                         <div class="rounded-bottom mt-3">
