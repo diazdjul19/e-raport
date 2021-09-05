@@ -171,7 +171,6 @@ return [
         // Laravel to cloudinary
         JD\Cloudder\CloudderServiceProvider::class,
 
-        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -248,7 +247,6 @@ return [
         // Laravel to cloudinary
         'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
 
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
