@@ -258,7 +258,12 @@
                                             @if($data->foto_siswa == null)
                                                 <img src="/bracket-master/app/img/nopicture.png"width="70px">
                                             @elseif($data->foto_siswa)
-                                                <img src="{{url('/storage/foto_siswa/'.$data->foto_siswa)}}"width="70px">
+                                                {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                                {{-- <img src="{{url('/storage/foto_siswa/'.$data->foto_siswa)}}"width="70px"> --}}
+
+                                                {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                                <img src="{{$data->foto_siswa}}"width="70px">
+
                                             @endif                  
                                             <input type="file" name="foto_siswa" class="form-control" id="exampleInputEmail1"  placeholder="" >
                                         </div>

@@ -10,6 +10,9 @@ use App\Models\MsKelas;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
+use JD\Cloudder\Facades\Cloudder;
+
+
 
 
 
@@ -96,12 +99,27 @@ class TeacherController extends Controller
         $data->email_guru = $request->email_guru;
         $data->walas_kelas = $request->walas_kelas;
 
-        if(isset($request->foto_guru)){
-            $imageFile = $request->nama_guru.'/'.\Str::random(60).'.'.$request->foto_guru->getClientOriginalExtension();
-            $image_path = $request->file('foto_guru')->move(storage_path('app/public/foto_guru/'.$request->nama_guru), $imageFile);
+        // MENGUPLOAD IMAGE KE STORAGE BAWAAN LARAVEL
+        // if(isset($request->foto_guru)){
+        //     $imageFile = $request->nama_guru.'/'.\Str::random(60).'.'.$request->foto_guru->getClientOriginalExtension();
+        //     $image_path = $request->file('foto_guru')->move(storage_path('app/public/foto_guru/'.$request->nama_guru), $imageFile);
 
-            $data->foto_guru = $imageFile;
+        //     $data->foto_guru = $imageFile;
+        // }
+
+        // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+        if ($image = $request->file('foto_guru')) {
+            $image_path = $image->getRealPath();
+
+            Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/tb_teachers_storage", "overwrite" => TRUE, "resource_type" => "image"));
+            //直前にアップロードされた画像のpublicIdを取得する。
+            $publicId = Cloudder::getPublicId();
+            $logoUrl = Cloudder::secureShow($publicId);
+
+            $data->foto_guru_public_id = $publicId;
+            $data->foto_guru = $logoUrl;
         }
+
 
         // Input Defaut
         $data->status_user = "not_active";
@@ -186,11 +204,32 @@ class TeacherController extends Controller
 
         
         // Ini adalah kondisi Pengimputan field data Foto Guru
-        if(isset($request->foto_guru)){
-            $imageFile = $request->nama_guru.'/'.\Str::random(60).'.'.$request->foto_guru->getClientOriginalExtension();
-            $image_path = $request->file('foto_guru')->move(storage_path('app/public/foto_guru/'.$request->nama_guru), $imageFile);
+        // MENGUPLOAD IMAGE KE STORAGE BAWAAN LARAVEL
+        // if(isset($request->foto_guru)){
+        //     $imageFile = $request->nama_guru.'/'.\Str::random(60).'.'.$request->foto_guru->getClientOriginalExtension();
+        //     $image_path = $request->file('foto_guru')->move(storage_path('app/public/foto_guru/'.$request->nama_guru), $imageFile);
 
-            $data->foto_guru = $imageFile;
+        //     $data->foto_guru = $imageFile;
+        // }
+
+        // MENGHAPUS IMAGE LAMA, JIKA DI TEMUKAN DATA YANG BARU DI EDIT
+        if(isset($request->foto_guru)){
+            if ($data->foto_guru_public_id) {
+                Cloudder::destroyImage($data->foto_guru_public_id);
+            }
+        }
+
+        // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+        if ($image = $request->file('foto_guru')) {
+            $image_path = $image->getRealPath();
+            Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/tb_teachers_storage", "overwrite" => TRUE, "resource_type" => "image"));
+
+            //直前にアップロードされた画像のpublicIdを取得する。
+            $publicId = Cloudder::getPublicId();
+            $logoUrl = Cloudder::secureShow($publicId);
+
+            $data->foto_guru_public_id = $publicId;
+            $data->foto_guru = $logoUrl;
         }
 
         // Ini adalah kondisi Pengimputan field data Username
@@ -239,6 +278,16 @@ class TeacherController extends Controller
 
         $select_delete = $request->get('select_delete');
         if ($select_delete == true) {
+
+            // START MENGHAPUS DATA DI CLOUDINARY
+            $get_publicid_img = MsTeacher::whereIn('id', $select_delete)->get();
+
+            foreach ($get_publicid_img as $key) {
+                if(isset($key->foto_guru_public_id)){
+                    Cloudder::destroyImage($key->foto_guru_public_id);
+                }
+            }
+            // END MENGHAPUS DATA DI CLOUDINARY
             
             $data_confirm = MsTeacher::whereIn('id', $select_delete)->get('id');
 

@@ -20,6 +20,7 @@ class AddNewFieldToUsersTable extends Migration
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->string('foto_user')->nullable();
+            $table->string('foto_user_public_id')->nullable();
             $table->string('status');
 
         });

@@ -222,9 +222,14 @@
                                             <label for="exampleInputEmail1">Foto Guru</label>
                                             
                                             <div>
-                                                @if($data->foto_guru)
-                                                    <img src="{{url('/storage/foto_guru/'.$data->foto_guru)}}"
-                                                    width="70px">
+                                                @if ($data->foto_guru == true)
+                                                    {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                                    {{-- <img src="{{url('/storage/foto_guru/'.$data->foto_guru)}}" width="70px"> --}}
+
+                                                    {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                                    <img src="{{$data->foto_guru}}" width="70px">
+                                                @else
+                                                    <img src="/folder-pendukung/user-polos.png" width="70px">
                                                 @endif
                                                 <input type="file" name="foto_guru" class="form-control" id="exampleInputEmail1"  placeholder="Foto Guru" value="{{$data->foto_guru}}" >
                                             </div>

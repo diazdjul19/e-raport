@@ -31,6 +31,7 @@ class CreateMsStudentsTable extends Migration
             $table->string('nomor_telpon_siswa')->nullable();
             $table->string('email_siswa')->nullable();
             $table->string('foto_siswa')->nullable();
+            $table->string('foto_siswa_public_id')->nullable();
 
             $table->string('nama_ayah')->nullable();
             $table->string('nama_ibu')->nullable();

@@ -138,7 +138,16 @@
                         <br>
                         <tr>
                             <th>Foto Guru</th>
-                            <td><img class="" style="width:120px;" src="{{url('/storage/foto_guru/'.$data->foto_guru)}}"></td>
+                            
+                            @if ($data->foto_guru == true)
+                                {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                {{-- <td><img class="" style="width:120px;" src="{{url('/storage/foto_guru/'.$data->foto_guru)}}"></td> --}}
+
+                                {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                <td><img class="" style="width:120px;" src="{{$data->foto_guru}}"></td>
+                            @else
+                                <td><img src="/folder-pendukung/user-polos.png" width="70px"></td>
+                            @endif
                         </tr>
                     </table>
                 </div>

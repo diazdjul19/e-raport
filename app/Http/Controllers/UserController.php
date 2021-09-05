@@ -10,6 +10,8 @@ use Auth;
 use DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
+use JD\Cloudder\Facades\Cloudder;
+
 
 class UserController extends Controller
 {
@@ -71,12 +73,27 @@ class UserController extends Controller
             $data->foto_user = $request->foto_user;
             $data->status = "not_active";
 
-            if (isset($request->foto_user)) {
-                $imageFile = $request->name . '/' . \Str::random(60) . '.' . $request->foto_user->getClientOriginalExtension();
-                $image_path = $request->file('foto_user')->move(storage_path('app/public/user/' . $request->name), $imageFile);
+            // MENGUPLOAD IMAGE KE STORAGE BAWAAN LARAVEL
+            // if (isset($request->foto_user)) {
+            //     $imageFile = $request->name . '/' . \Str::random(60) . '.' . $request->foto_user->getClientOriginalExtension();
+            //     $image_path = $request->file('foto_user')->move(storage_path('app/public/user/' . $request->name), $imageFile);
 
-                $data->foto_user = $imageFile;
+            //     $data->foto_user = $imageFile;
+            // }
+
+            // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+            if ($image = $request->file('foto_user')) {
+                $image_path = $image->getRealPath();
+
+                Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/tb_user_storage", "overwrite" => TRUE, "resource_type" => "image"));
+                //直前にアップロードされた画像のpublicIdを取得する。
+                $publicId = Cloudder::getPublicId();
+                $logoUrl = Cloudder::secureShow($publicId);
+
+                $data->foto_user_public_id = $publicId;
+                $data->foto_user = $logoUrl;
             }
+
             $data->save();
 
             // DB::commit() ini akan menginput data jika dari proses diatas tidak ada yg salah atau error.
@@ -153,12 +170,32 @@ class UserController extends Controller
                 $data->password = Hash::make($request->password);
             }
 
+            // MENGUPLAD IMAGE KE STORAGE BAWAAN LARAVEL
+            // if (isset($request->foto_user)) {
+            //     $imageFile = $request->name . '/' . \Str::random(60) . '.' . $request->foto_user->getClientOriginalExtension();
+            //     $image_path = $request->file('foto_user')->move(storage_path('app/public/user/' . $request->name), $imageFile);
 
-            if (isset($request->foto_user)) {
-                $imageFile = $request->name . '/' . \Str::random(60) . '.' . $request->foto_user->getClientOriginalExtension();
-                $image_path = $request->file('foto_user')->move(storage_path('app/public/user/' . $request->name), $imageFile);
+            //     $data->foto_user = $imageFile;
+            // }
 
-                $data->foto_user = $imageFile;
+            // MENGHAPUS IMAGE LAMA, JIKA DI TEMUKAN DATA YANG BARU DI EDIT
+            if(isset($request->foto_user)){
+                if ($data->foto_user_public_id) {
+                    Cloudder::destroyImage($data->foto_user_public_id);
+                }
+            }
+
+            // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+            if ($image = $request->file('foto_user')) {
+                $image_path = $image->getRealPath();
+                Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/tb_user_storage", "overwrite" => TRUE, "resource_type" => "image"));
+
+                //直前にアップロードされた画像のpublicIdを取得する。
+                $publicId = Cloudder::getPublicId();
+                $logoUrl = Cloudder::secureShow($publicId);
+
+                $data->foto_user_public_id = $publicId;
+                $data->foto_user = $logoUrl;
             }
 
             $data->save();
@@ -202,10 +239,20 @@ class UserController extends Controller
 
         if ($select_delete == true) {
 
+            // START MENGHAPUS DATA DI CLOUDINARY
+            $get_publicid_img = User::whereIn('id', $select_delete)->get();
+
+            foreach ($get_publicid_img as $key) {
+                if(isset($key->foto_user_public_id)){
+                    Cloudder::destroyImage($key->foto_user_public_id);
+                }
+            }
+            // END MENGHAPUS DATA DI CLOUDINARY
+
             $data_confirm = User::whereIn('id', $select_delete)->get('id');
 
             if ($data_confirm == true) {
-                $delete_now = User::whereIn('id', $data_confirm)->delete();
+                // $delete_now = User::whereIn('id', $data_confirm)->delete();
             } else {
                 return "Gagal Menghapus Data :(";
             }

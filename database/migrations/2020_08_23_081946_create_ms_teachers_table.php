@@ -29,6 +29,7 @@ class CreateMsTeachersTable extends Migration
             $table->string('email_guru')->nullable();
             $table->integer('walas_kelas')->nullable();
             $table->string('foto_guru')->nullable();
+            $table->string('foto_guru_public_id')->nullable();
 
             $table->string('status_user');
             $table->string('username')->nullable();

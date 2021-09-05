@@ -91,7 +91,17 @@
                         </tr>
                         <tr>
                             <th>Foto Anggota</th>
-                            <td><img class="" style="width:120px;" src="{{url('/storage/user/'.$data->foto_user)}}"></td>
+                            @if ($data->foto_user == true)
+                                {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                {{-- <td><img class="" style="width:120px;" src="{{url('/storage/user/'.$data->foto_user)}}"></td> --}}
+
+                                {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                <td><img class="" style="width:120px;" src="{{$data->foto_user}}"></td>
+                            @else
+                                <td><img style="width: 50px; height:50px;border-radius:50%;" src="/folder-pendukung/user-polos.png"></td>
+                            @endif
+                            
+
                         </tr>
                     </table>
                 </div>

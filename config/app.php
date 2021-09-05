@@ -168,7 +168,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         // Wkhtmltopdf
         Barryvdh\Snappy\ServiceProvider::class,
-
+        // Laravel to cloudinary
+        JD\Cloudder\CloudderServiceProvider::class,
 
         Barryvdh\Debugbar\ServiceProvider::class,
 
@@ -244,7 +245,8 @@ return [
         // Wkhtmltopdf
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
-
+        // Laravel to cloudinary
+        'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 

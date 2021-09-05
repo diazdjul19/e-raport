@@ -178,9 +178,9 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($d->status == 'not_active')
-                                            <a class="btn-sm btn btn-outline-warning" id="active-button" href="{{route('management-students-set-active', $d->id)}}"  data-toggle="tooltip" data-placement="right" title="Status Guru Belum Aktif"><i class="fa fa-clock"></i></a>
+                                            <a class="btn-sm btn btn-outline-warning" id="active-button" href="{{route('management-students-set-active', $d->id)}}"  data-toggle="tooltip" data-placement="right" title="Status Siswa Belum Aktif"><i class="fa fa-clock"></i></a>
                                         @elseif($d->status == 'active')
-                                            <a class="btn-sm btn btn-outline-success" id="non-active-button" href="{{route('management-students-set-notactive', $d->id)}}"  data-toggle="tooltip" data-placement="right" title="Status Guru Sudah Aktif"><i class="fa fa-user-check" ></i></a>
+                                            <a class="btn-sm btn btn-outline-success" id="non-active-button" href="{{route('management-students-set-notactive', $d->id)}}"  data-toggle="tooltip" data-placement="right" title="Status Siswa Sudah Aktif"><i class="fa fa-user-check" ></i></a>
                                         
                                         @endif 
                                     </td>

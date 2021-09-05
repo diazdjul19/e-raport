@@ -14,6 +14,9 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Exports\DownloadFormatImportStudents;
 use Maatwebsite\Excel\Facades\Excel;
 
+use JD\Cloudder\Facades\Cloudder;
+
+
 
 
 
@@ -88,11 +91,25 @@ class StudentsController extends Controller
         $data->jk_wali = $request->jk_wali;
         $data->pekerjaan_wali = $request->pekerjaan_wali;
 
-        if (isset($request->foto_siswa)) {
-            $imageFile = $request->nama_peserta_didik . '/' . \Str::random(60) . '.' . $request->foto_siswa->getClientOriginalExtension();
-            $image_path = $request->file('foto_siswa')->move(storage_path('app/public/foto_siswa/' . $request->nama_peserta_didik), $imageFile);
+        // MENGUPLOAD IMAGE KE STORAGE BAWAAN LARAVEL
+        // if (isset($request->foto_siswa)) {
+        //     $imageFile = $request->nama_peserta_didik . '/' . \Str::random(60) . '.' . $request->foto_siswa->getClientOriginalExtension();
+        //     $image_path = $request->file('foto_siswa')->move(storage_path('app/public/foto_siswa/' . $request->nama_peserta_didik), $imageFile);
 
-            $data->foto_siswa = $imageFile;
+        //     $data->foto_siswa = $imageFile;
+        // }
+
+        // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+        if ($image = $request->file('foto_siswa')) {
+            $image_path = $image->getRealPath();
+
+            Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/tb_students_storage", "overwrite" => TRUE, "resource_type" => "image"));
+            //直前にアップロードされた画像のpublicIdを取得する。
+            $publicId = Cloudder::getPublicId();
+            $logoUrl = Cloudder::secureShow($publicId);
+
+            $data->foto_siswa_public_id = $publicId;
+            $data->foto_siswa = $logoUrl;
         }
 
         // Input Defaut
@@ -347,12 +364,34 @@ class StudentsController extends Controller
         $data->jk_wali = $request->get('jk_wali');
         $data->pekerjaan_wali = $request->get('pekerjaan_wali');
 
-        if (isset($request->foto_siswa)) {
-            $imageFile = $request->nama_peserta_didik . '/' . \Str::random(60) . '.' . $request->foto_siswa->getClientOriginalExtension();
-            $image_path = $request->file('foto_siswa')->move(storage_path('app/public/foto_siswa/' . $request->nama_peserta_didik), $imageFile);
+        // MENGUPLOAD IMAGE KE STORAGE BAWAAN LARAVEL
+        // if (isset($request->foto_siswa)) {
+        //     $imageFile = $request->nama_peserta_didik . '/' . \Str::random(60) . '.' . $request->foto_siswa->getClientOriginalExtension();
+        //     $image_path = $request->file('foto_siswa')->move(storage_path('app/public/foto_siswa/' . $request->nama_peserta_didik), $imageFile);
 
-            $data->foto_siswa = $imageFile;
+        //     $data->foto_siswa = $imageFile;
+        // }
+
+        // MENGHAPUS IMAGE LAMA, JIKA DI TEMUKAN DATA YANG BARU DI EDIT
+        if(isset($request->foto_siswa)){
+            if ($data->foto_siswa_public_id) {
+                Cloudder::destroyImage($data->foto_siswa_public_id);
+            }
         }
+
+        // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+        if ($image = $request->file('foto_siswa')) {
+            $image_path = $image->getRealPath();
+            Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/tb_students_storage", "overwrite" => TRUE, "resource_type" => "image"));
+
+            //直前にアップロードされた画像のpublicIdを取得する。
+            $publicId = Cloudder::getPublicId();
+            $logoUrl = Cloudder::secureShow($publicId);
+
+            $data->foto_siswa_public_id = $publicId;
+            $data->foto_siswa = $logoUrl;
+        }
+
 
         // Checklist Data
         $data->di_terima_di_kelas = $request->get('di_terima_di_kelas');
@@ -399,6 +438,16 @@ class StudentsController extends Controller
     {
         $select_delete = $request->get('select_delete');
         if ($select_delete == true) {
+
+            // START MENGHAPUS DATA DI CLOUDINARY
+            $get_publicid_img = MsStudents::whereIn('id', $select_delete)->get();
+
+            foreach ($get_publicid_img as $key) {
+                if(isset($key->foto_siswa_public_id)){
+                    Cloudder::destroyImage($key->foto_siswa_public_id);
+                }
+            }
+            // END MENGHAPUS DATA DI CLOUDINARY
 
             $data_confirm = MsStudents::whereIn('id', $select_delete)->get('id');
 

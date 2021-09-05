@@ -70,7 +70,16 @@
                                 <tr>
                                     <td class="text-center pt-4">{{$loop->iteration}}</td>
                                     <td class="text-center">
-                                        <img style="width: 50px; height:50px;border-radius:50%;" src="{{url('/storage/user/'.$d->foto_user)}}">
+                                        @if ($d->foto_user == true)
+                                            {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                            {{-- <img style="width: 50px; height:50px;border-radius:50%;" src="{{url('/storage/user/'.$d->foto_user)}}"> --}}
+                                            
+                                            {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                            <img style="width: 50px; height:50px;border-radius:50%;" src="{{$d->foto_user}}">
+                                        @else
+                                            <img style="width: 50px; height:50px;border-radius:50%;" src="/folder-pendukung/user-polos.png">
+                                        @endif
+
                                     </td>
                                     <td class="text-center pt-4">{{$d->name}}</td>
                                     <td class="text-center pt-4">{{$d->email}}</td>
