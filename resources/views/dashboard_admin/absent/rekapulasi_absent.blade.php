@@ -79,10 +79,10 @@
                                                         <label style="color: black;font-weight:bold;">Semester :</label>
                                                         <select class="form-control" id="" name="semester">
                                                             <optgroup label="Semester Active">
-                                                                <option value="{{$get_semester_active->semester}}">
-                                                                    @if ($get_semester_active->semester == "ganjil")
+                                                                <option value="{{$get_semester_active[0]->semester}}">
+                                                                    @if ($get_semester_active[0]->semester == "ganjil")
                                                                         Semester Satu (Ganjil)
-                                                                    @elseif ($get_semester_active->semester == "genap")
+                                                                    @elseif ($get_semester_active[0]->semester == "genap")
                                                                         Semester Dua (Genap)
                                                                     @endif
                                                                 </option>
@@ -104,7 +104,7 @@
                                                         <label style="color: black;font-weight:bold;">Th.Pelajaran :</label>
                                                         <select class="form-control" id="" name="th_pelajaran">
                                                             <optgroup label="Thn.Pelajaran Active">
-                                                                <option value="{{$get_semester_active->tahun_ajaran}}">{{$get_semester_active->tahun_ajaran}}</option>
+                                                                <option value="{{$get_semester_active[0]->tahun_ajaran}}">{{$get_semester_active[0]->tahun_ajaran}}</option>
                                                             </optgroup>
 
                                                             <optgroup label="Pilih Thn.Pelajaran">

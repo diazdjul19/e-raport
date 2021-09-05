@@ -82,7 +82,7 @@ class AbsentController extends Controller
 
     public function kehadiran_bulanan_siswa(Request $request, $id) {
         $data = MsKelas::find($id);
-        $get_semester_active = MsSemesterActive::where('status', 'active')->first();
+        $get_semester_active = MsSemesterActive::where('status', 'active')->get();
         
         // $get_th_pelajaran di ambil dari semua data semester active, lalu hanya di ambil tahun ajaran nya saja.
         $get_th_pelajaran = MsSemesterActive::get('tahun_ajaran');
@@ -92,7 +92,7 @@ class AbsentController extends Controller
         $thn = date('Y');
         $data_absent = MsAbsent::get();
 
-        if ($data == null || $get_semester_active == null || $get_th_pelajaran == null) {
+        if ($data == null || $get_semester_active->isEmpty() || $get_th_pelajaran->isEmpty()) {
             alert()->warning('WarningAlert','Ada Data Yang Belum Lengkap / Aktif!!!');
             return redirect()->back();   
         }else{
@@ -230,16 +230,17 @@ class AbsentController extends Controller
     public function rekapitulasi_absent()
     {
         $get_kelas_siswa = MsKelas::orderBy('nama_kelas', 'asc')->get();
-        $get_semester_active = MsSemesterActive::where('status', 'active')->first();
+        $get_semester_active = MsSemesterActive::where('status', 'active')->get();
         $get_th_pelajaran = MsSemesterActive::get('tahun_ajaran');
 
-        if ($get_kelas_siswa == null || $get_semester_active == null || $get_th_pelajaran == null) {
+        if ($get_kelas_siswa->isEmpty() || $get_semester_active->isEmpty() || $get_th_pelajaran->isEmpty()) {
             alert()->warning('WarningAlert','Ada Data Yang Belum Lengkap / Aktif!!!');
             return redirect()->back();   
         }else{
             return view('dashboard_admin.absent.rekapulasi_absent', compact('get_kelas_siswa','get_semester_active', 'get_th_pelajaran'));
         }
 
+        // return view('dashboard_admin.absent.rekapulasi_absent', compact('get_kelas_siswa','get_semester_active', 'get_th_pelajaran'));
     }
 
     public function buka_rekapulasi_absent(Request $request)
