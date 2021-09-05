@@ -35,7 +35,12 @@ return [
     
     'pdf' => [
         'enabled' => true,
-        'binary'  => env('SNAPPY_BIN', '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"'),
+        // BINARY FOR LOCAL WINDOWS
+        //'binary'  => env('SNAPPY_BIN', '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"'),
+        
+        // BINARRY FOR BILDPACK HEROKU https://github.com/chap/wkhtmltopdf-heroku-18-buildpack.git
+        'binary'  => '/app/bin/wkhtmltopdf',
+        
         'timeout' => false,
         'options' => [],
         'env'     => [],
@@ -43,7 +48,12 @@ return [
     
     'image' => [
         'enabled' => true,
-        'binary'  => "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf",
+        // BINARY FOR LOCAL WINDOWS
+        //'binary'  => "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf",
+        
+        // BINARRY FOR BILDPACK HEROKU https://github.com/chap/wkhtmltopdf-heroku-18-buildpack.git
+        'binary'  => '/app/bin/wkhtmltoimage',
+        
         'timeout' => false,
         'options' => [],
         'env'     => [],
