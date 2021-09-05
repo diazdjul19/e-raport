@@ -204,9 +204,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Logo Sekolah</label> <br>
-                                            @if($data_edit->logo_sekolah)
-                                                    <img src="{{url('/storage/logo_sekolah/'.$data_edit->logo_sekolah)}}"
-                                                    width="120px">
+                                            @if($data_edit->logo_sekolah == true)
+                                                {{-- GET IMAGE FROM STORAGE LARAVEL --}}
+                                                {{-- <img src="{{url('/storage/logo_sekolah/'.$data_edit->logo_sekolah)}}" width="120px"> --}}
+
+                                                {{-- GET IMAGE FROM STORAGE CLOUDINARY --}}
+                                                <img src="{{$data_edit->logo_sekolah}}" width="120px">
+
                                             @endif
                                             <input type="file" name="logo_sekolah" class="form-control" id="exampleInputEmail1">
                                         </div>

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MsSchoolIdentity;
 
+use JD\Cloudder\Facades\Cloudder;
+
+
 class SchoolIdentityController extends Controller
 {
     /**
@@ -71,11 +74,25 @@ class SchoolIdentityController extends Controller
         $data->kota_kabupaten = $request->kota_kabupaten;
         $data->provinsi = $request->provinsi;
 
-        if(isset($request->logo_sekolah)){
-            $imageFile = $request->nama_sekolah.'/'.\Str::random(60).'.'.$request->logo_sekolah->getClientOriginalExtension();
-            $image_path = $request->file('logo_sekolah')->move(storage_path('app/public/logo_sekolah/'.$request->nama_sekolah), $imageFile);
+        // MENGUPLOAD IMAGE KE STORAGE LARAVEL
+        // if(isset($request->logo_sekolah)){
+        //     $imageFile = $request->nama_sekolah.'/'.\Str::random(60).'.'.$request->logo_sekolah->getClientOriginalExtension();
+        //     $image_path = $request->file('logo_sekolah')->move(storage_path('app/public/logo_sekolah/'.$request->nama_sekolah), $imageFile);
 
-            $data->logo_sekolah = $imageFile;
+        //     $data->logo_sekolah = $imageFile;
+        // }
+
+        // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+        if ($image = $request->file('logo_sekolah')) {
+            $image_path = $image->getRealPath();
+
+            Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/logo-sekolah", "overwrite" => TRUE, "resource_type" => "image"));
+            //直前にアップロードされた画像のpublicIdを取得する。
+            $publicId = Cloudder::getPublicId();
+            $logoUrl = Cloudder::secureShow($publicId);
+
+            $data->logo_sekolah_public_id = $publicId;
+            $data->logo_sekolah = $logoUrl;
         }
 
         
@@ -134,12 +151,32 @@ class SchoolIdentityController extends Controller
             $data->kota_kabupaten = $request->get('kota_kabupaten');
             $data->provinsi = $request->get('provinsi');
 
+            //MENGUPLOAD IMAGE KE STORAGE laravel
+            // if(isset($request->logo_sekolah)){
+            //     $imageFile = $request->nama_sekolah.'/'.\Str::random(60).'.'.$request->logo_sekolah->getClientOriginalExtension();
+            //     $image_path = $request->file('logo_sekolah')->move(storage_path('app/public/logo_sekolah/'.$request->nama_sekolah), $imageFile);
 
+            //     $data->logo_sekolah = $imageFile;
+            // }
+
+            // MENGHAPUS IMAGE LAMA, JIKA DI TEMUKAN DATA YANG BARU DI EDIT
             if(isset($request->logo_sekolah)){
-                $imageFile = $request->nama_sekolah.'/'.\Str::random(60).'.'.$request->logo_sekolah->getClientOriginalExtension();
-                $image_path = $request->file('logo_sekolah')->move(storage_path('app/public/logo_sekolah/'.$request->nama_sekolah), $imageFile);
+                if ($data->logo_sekolah_public_id) {
+                    Cloudder::destroyImage($data->logo_sekolah_public_id);
+                }
+            }
 
-                $data->logo_sekolah = $imageFile;
+            // MENGUPLOAD IMAGE KE STORAGE CLOUDINARY
+            if ($image = $request->file('logo_sekolah')) {
+                $image_path = $image->getRealPath();
+                Cloudder::upload($image_path, null, array("folder" => "e-raport-storage/logo-sekolah", "overwrite" => TRUE, "resource_type" => "image"));
+
+                //直前にアップロードされた画像のpublicIdを取得する。
+                $publicId = Cloudder::getPublicId();
+                $logoUrl = Cloudder::secureShow($publicId);
+
+                $data->logo_sekolah_public_id = $publicId;
+                $data->logo_sekolah = $logoUrl;
             }
 
             $data->iframe_sekolah = $request->get('iframe_sekolah');
