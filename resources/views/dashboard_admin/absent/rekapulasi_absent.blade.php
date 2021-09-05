@@ -78,15 +78,15 @@
                                                     <div class="col-md-12">
                                                         <label style="color: black;font-weight:bold;">Semester :</label>
                                                         <select class="form-control" id="" name="semester">
-                                                            {{-- <optgroup label="Semester Active">
-                                                                <option value="{{$get_semester_active[0]->semester}}">
-                                                                    @if ($get_semester_active[0]->semester == "ganjil")
+                                                            <optgroup label="Semester Active">
+                                                                <option value="{{$get_semester_active->semester}}">
+                                                                    @if ($get_semester_active->semester == "ganjil")
                                                                         Semester Satu (Ganjil)
-                                                                    @elseif ($get_semester_active[0]->semester == "genap")
+                                                                    @elseif ($get_semester_active->semester == "genap")
                                                                         Semester Dua (Genap)
                                                                     @endif
                                                                 </option>
-                                                            </optgroup> --}}
+                                                            </optgroup>
 
                                                             <optgroup label="Pilih Semester">
                                                                 <option value="ganjil">Semester Satu (Ganjil)</option>
@@ -103,9 +103,9 @@
                                                     <div class="col-md-12">
                                                         <label style="color: black;font-weight:bold;">Th.Pelajaran :</label>
                                                         <select class="form-control" id="" name="th_pelajaran">
-                                                            {{-- <optgroup label="Thn.Pelajaran Active">
-                                                                <option value="{{$get_semester_active[0]->tahun_ajaran}}">{{$get_semester_active[0]->tahun_ajaran}}</option>
-                                                            </optgroup> --}}
+                                                            <optgroup label="Thn.Pelajaran Active">
+                                                                <option value="{{$get_semester_active->tahun_ajaran}}">{{$get_semester_active->tahun_ajaran}}</option>
+                                                            </optgroup>
 
                                                             <optgroup label="Pilih Thn.Pelajaran">
                                                                 @foreach ($get_th_pelajaran as $item)
