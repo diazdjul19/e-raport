@@ -272,7 +272,7 @@ class AbsentController extends Controller
         ->where('kelas_siswa',$request->kelas_siswa)
         ->where('th_pelajaran',$request->th_pelajaran)
         ->where('semester',$request->semester)
-        ->select(DB::raw('id, nama_siswa, nis_siswa, kelas_siswa,  SUM(jml_sakit_bln) as sakit, SUM(jml_izin_bln) as izin, SUM(jml_alpa_bln) as alpa'))
+        ->select(DB::raw("id, nama_siswa, nis_siswa, kelas_siswa,  SUM(jml_sakit_bln) as sakit, SUM(jml_izin_bln) as izin, SUM(jml_alpa_bln) as alpa"))
         ->groupBy('nis_siswa')
         ->get(); 
 

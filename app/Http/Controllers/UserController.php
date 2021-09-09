@@ -252,7 +252,7 @@ class UserController extends Controller
             $data_confirm = User::whereIn('id', $select_delete)->get('id');
 
             if ($data_confirm == true) {
-                // $delete_now = User::whereIn('id', $data_confirm)->delete();
+                $delete_now = User::whereIn('id', $data_confirm)->delete();
             } else {
                 return "Gagal Menghapus Data :(";
             }
