@@ -8,6 +8,6 @@ class MsAbsent extends Model
 {
     protected $guarded = [];
 
-    public $keyType = ‘string’;
+    protected $keyType = 'string';
     
 }
